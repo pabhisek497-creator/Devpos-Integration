@@ -26,15 +26,14 @@ pipeline {
         stage('Build with Gradle') {
             steps {
                 echo "⚙️ Building project using Gradle..."
-                sh 'chmod +x gradlew'
-                sh './gradlew clean build'
+                bat 'gradlew clean build'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 echo "🐳 Building Docker image..."
-                sh "docker build -t ${IMAGE_NAME}:latest ."
+                bat "docker build -t %IMAGE_NAME%:latest ."
             }
         }
 
@@ -42,9 +41,9 @@ pipeline {
             steps {
                 echo "📤 Pushing Docker image to DockerHub..."
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh """
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push ${IMAGE_NAME}:latest
+                    bat """
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                        docker push %IMAGE_NAME%:latest
                     """
                 }
             }
