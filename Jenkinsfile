@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // Use Gradle installed in Jenkins
-        gradle 'Gradle_8'
-    }
 
     environment {
         // DockerHub credentials ID (the one you added in Jenkins)
